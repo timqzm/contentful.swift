@@ -84,6 +84,19 @@ public enum Link: Codable {
         }
     }
 
+    public var flatResource: FlatResource? {
+        switch self {
+        case .entry(let entry):
+            return entry
+        case .asset(let asset):
+            return asset
+        case .entryDecodable(let entryDecodable):
+            return entryDecodable
+        default:
+            return nil
+        }
+    }
+
     internal var isResolved: Bool {
         switch self {
         case .asset, .entry, .entryDecodable: return true
