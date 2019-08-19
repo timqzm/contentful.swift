@@ -426,6 +426,12 @@ public class ResourceLinkInline: InlineNode {
             }
         }
     }
+
+    public override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: NodeContentCodingKeys.self)
+        try container.encode(data, forKey: .data)
+    }
 }
 
 /// A node containing text with marks.

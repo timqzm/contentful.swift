@@ -158,7 +158,22 @@ public enum Link: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(sys, forKey: .sys)
+
+        // a stub sys for encoding
+        var aSys: Link.Sys
+        switch self {
+        case .entry(let entry):
+            aSys = Link.Sys(id: entry.sys.id, linkType: "Entry", type: entry.sys.type)
+        case .asset(let asset):
+            aSys = Link.Sys(id: asset.sys.id, linkType: "Asset", type: asset.sys.type)
+        case .entryDecodable(let entryDecodable):
+            aSys = Link.Sys(id: entryDecodable.id, linkType: "EntryDecodable", type: "EntryDecodable")
+        case .unresolved(let sys):
+            aSys = sys
+        }
+
+        // temporary workaround to avoid fatalError crashes and nil value for aRichTextDocument in CoreData
+        try container.encode(aSys, forKey: .sys)
     }
 
     private enum CodingKeys: String, CodingKey {
