@@ -20,7 +20,7 @@ import Foundation
 /// func fetchArray(of: Cat.self, matching: QueryON<Cat>,
 /// then completion: @escaping ResultsHandler<MappedArrayResponse<Cat>>) -> URLSessionDataTask?
 /// ```
-public protocol EntryDecodable: FlatResource, Decodable, EndpointAccessible {
+public protocol EntryDecodable: AnyObject, FlatResource, Decodable, EndpointAccessible {
     /// The identifier of the Contentful content type that will map to this type of `EntryPersistable`
     static var contentTypeId: ContentTypeId { get }
 }
@@ -66,7 +66,7 @@ public class Entry: LocalizableResource {
          - includedEntries: `Entry` candidates that `self` _could_ link to.
          - includedAssets: `Asset` candidates that `self` _could_ link to.
     */
-    internal func resolveLinks(against includedEntries: [Entry]?, and includedAssets: [Asset]?) {
+    internal func resolveLinks(against includedEntries: [String: Entry], and includedAssets: [String: Asset]) {
         var localizableFields = [FieldName: [LocaleCode: Any]]()
 
         for (fieldName, localizableFieldMap) in self.localizableFields {
